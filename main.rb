@@ -1,7 +1,7 @@
 require 'csv'
 require 'sqlite3'
 require 'active_record'
-
+require 'pry'
 
 # Connect to an in-memory sqlite3 database
 ActiveRecord::Base.establish_connection(
@@ -10,8 +10,7 @@ ActiveRecord::Base.establish_connection(
 )
 
 ActiveRecord::Schema.define do
-    create_table :joslin_field, force: true do |t|
-      t.string :station
+    create_table :joslin_fields, force: true do |t|
       t.date :capture_date
       t.float :temp
       t.float :dew_point
@@ -37,7 +36,9 @@ data = []
 CSV.foreach("72586699999.csv") do |row|
 row.map{ |x| x.gsub(/[^0-9a-z ]/i, '')}
 data.push row
-#entry = JoslinField.create!()
+entry = JoslinField.create!(capture_date: row[1], temp: row[6])
+
 end
 
-p data[0]
+p JoslinField.all.count
+p JoslinField.find_by(capture_date: data[1])
