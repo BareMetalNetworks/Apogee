@@ -1,4 +1,10 @@
+require 'csv'
 
-array = File.read("72586699999.csv").split(",").map(&:strip).map{ |x| x.gsub(/[^0-9a-z ]/i, '')}
+data = []
 
-p array
+CSV.foreach("72586699999.csv") do |row|
+row.map{ |x| x.gsub(/[^0-9a-z ]/i, '')}
+data.push row
+end
+
+p data[0]
